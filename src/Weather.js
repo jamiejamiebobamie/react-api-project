@@ -7,20 +7,20 @@ import './Weather.css'
 
 
 function Weather (props){
-
-    const { main, description, icon } = props.weather
-    const { temp, pressure, humidity, temp_min, temp_max } = props.main
-
-    const content = (
-        <div className="weatherInfo">
-            <WeatherDescription main={main} description={description} icon={icon} />
-            <Temperature temp={temp}  temp_min={temp_min} temp_max={temp_max}  />
-            <Atmosphere pressure={pressure} humidity={humidity} />
-        </div>
-    )
-
+    let content = null;
+    if (props.weather && props.main) {
+        const { main, description, icon } = props.weather[0]
+        const { temp, pressure, humidity, temp_min, temp_max } = props.main
+        content = (
+            <div className="weatherInfo">
+                <h1>{props.time}</h1>
+                <WeatherDescription main={main} description={description} icon={icon} />
+                <Temperature temp={temp}  temp_min={temp_min} temp_max={temp_max}  />
+                <Atmosphere pressure={pressure} humidity={humidity} />
+            </div>
+        )
+    }
     return content
-
 }
 
 

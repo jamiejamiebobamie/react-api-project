@@ -1,11 +1,12 @@
 
 import React, { Component } from 'react';
 
-import Weather from './Weather.js';
 
 import './App.css';
 
 import Error from './Error.js'
+
+import Forecast from './Forecast.js'
 
 /**
  * This example illustrates a simple react project
@@ -35,24 +36,15 @@ class App extends Component {
     }
   }
 
-
-  handleLoading(){
-      if (this.state.weatherdata === null){
-          this.setState({isLoading:true})
-      } else {
-          this.setState({isLoading:false})
-      }
-  }
-
   handleSubmit(e) {
-    this.handleLoading()
+    this.setState({isLoading:true})
     e.preventDefault()
     // ! Get your own API key !
     const apikey = process.env.REACT_APP_OPENWEATHERMAP_API_KEY
     // Get the zip from the input
     const zip = this.state.inputValue
     // Form an API request URL with the apikey and zip
-    const url = `https://api.openweathermap.org/data/2.5/weather?zip=${zip},us&appid=${apikey}`
+    const url = `https://api.openweathermap.org/data/2.5/forecast?zip=${zip},us&appid=${apikey}`
     // Get data from the API with fetch
     fetch(url).then(res => {
       // Handle the response stream as JSON
@@ -63,6 +55,7 @@ class App extends Component {
       // ! This needs better error checking here or at renderWeather()
       // It's possible to get a valid JSON response that is not weather
       // data, for example when a bad zip code entered.
+      this.setState({isLoading:false})
     }).catch((err) => {
       // If there is no data
       this.setState({ weatherData: null }) // Clear the weather data we don't have any to display
@@ -70,15 +63,17 @@ class App extends Component {
       console.log('-- Error fetching --')
       console.log(err.message)
       // You may want to display an error to the screen here.
+          this.setState({isLoading:false})
     })
   }
 
   render() {
-      console.log(this.state.weatherData)
+
+        console.log(this.state.weatherData)
     return (
       <div className="App">
 
-      <h1>Open Weather API using React</h1>
+      <h1>Get Weather</h1>
 
         {/** This input uses the controlled component pattern */}
         <form onSubmit={e => this.handleSubmit(e)}>
@@ -99,10 +94,12 @@ class App extends Component {
           <button type="submit">Submit</button>
 
         </form>
-        {(this.state.weatherData !== null && this.state.weatherData.message===undefined) ? <Weather weather={this.state.weatherData.weather[0]} main={this.state.weatherData.main} /> : <Error mesg={this.state.weatherData} error={true}/>}
+        {(this.state.weatherData !== null) ? <Forecast name={this.state.weatherData.city.name} country={this.state.weatherData.city.country} list={this.state.weatherData.list} /> : <Error error={this.state.weatherData} isLoading={this.state.isLoading}/>}
       </div>
     );
   }
 }
 
 export default App;
+
+ // && this.state.weatherData.message !=='city not found'
