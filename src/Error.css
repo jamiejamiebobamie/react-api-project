@@ -1,0 +1,10 @@
+.Error{
+    color: white;
+    text-align: center;
+    margin-left: -30px;
+}
+
+.Loading{
+    margin-top: 100px;
+    margin-left: 0px;
+}

@@ -1,0 +1,12 @@
+.weatherInfo{
+    display: flex;
+    flex-direction: column;
+    text-indent: -85px;
+    margin-top: 15px;
+    color:white;
+    margin-top: 20px;
+    margin-bottom: 30px;
+    justify-content: space-around;
+    height: 200px;
+    font-size: 20px;
+}
